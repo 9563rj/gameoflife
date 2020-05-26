@@ -4,10 +4,10 @@
 #include <random>
 using namespace std;
 
-const int tileSize = 16;
+const int tileSize = 1;
 const int ticksFrame = 8;
-const int nCols = 40;
-const int nRows = 30;
+const int nCols = 400;
+const int nRows = 300;
 const int winX = nCols*tileSize;
 const int winY = nRows*tileSize;
 
@@ -47,7 +47,6 @@ bool init(SDL_Window *&window, SDL_Renderer *&renderer)
       for(int col = 1; col < nCols-1; col++)
 	{
 	  int index = col+row*nCols;
-	  cout << "index is currently " << index << endl;
 	  cells[index]->setNeighbors(cells[index-nCols], cells[index+1], cells[index+nCols], cells[index-1], cells[index-(nCols+1)], cells[index-(nCols-1)], cells[index+(nCols+1)], cells[index+(nCols-1)]);
 	}
     }
@@ -91,23 +90,10 @@ bool cleanup(SDL_Window *window, SDL_Renderer *renderer)
 
 int main()
 {
-  Uint32 startTime = 0;
-  Uint32 endTime = 0;
-  Uint32 delta = 0;
-  if(!startTime)
-    {
-      startTime = SDL_GetTicks();
-    }
-  else
-    {
-      delta = endTime - startTime;
-    }
-  
   SDL_Window *window = NULL;
   SDL_Renderer *renderer = NULL;
   
   init(window, renderer);
-  cout << "init finished" << endl;
   render(renderer);
 
   bool running = true;
@@ -116,14 +102,6 @@ int main()
       cycle();
       render(renderer);
       running = inputHandler();
-      
-      // frame limiter
-      if(delta<ticksFrame)
-	{
-	  SDL_Delay(ticksFrame - delta);
-	}
-      startTime = endTime;
-      endTime = SDL_GetTicks();
     }
   cleanup(window, renderer);
 }
